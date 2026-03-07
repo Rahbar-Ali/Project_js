@@ -162,7 +162,8 @@ btnTransfer.addEventListener('click', function (e) {
   const recieverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value,
   );
-  console.log(amount, recieverAcc);
+  inputTransferAmount.value = inputTransferTo.value = '';
+  // console.log(amount, recieverAcc);
 
   if (
     amount > 0 &&
@@ -173,9 +174,35 @@ btnTransfer.addEventListener('click', function (e) {
     // console.log('Transfer');
     currentAccount.movements.push(-amount);
     recieverAcc.movements.push(amount);
+
+    //Update UI
     updateUi(currentAccount);
   }
 });
+
+// FindIndex Method
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username,
+    );
+    accounts.splice(index, 1);
+
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
+// The New findLast and findLastIndex Methods
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements);
+const lastWithdrawal = movements.findLast(mov => mov < 0);
+console.log(lastWithdrawal);
 
 // LECTURES
 
