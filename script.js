@@ -211,6 +211,21 @@ btnSort.addEventListener('click', function (e) {
 
 // The New findLast and findLastIndex Methods
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const groupedMovements = Object.groupBy(movements, movement =>
+  movement > 0 ? 'deposit' : 'withdrawal',
+);
+console.log(groupedMovements);
+
+const groupedByActivity = Object.groupBy(accounts, account => {
+  const movementsCount = account.movements.length;
+
+  if (movementsCount >= 8) return 'Very Active';
+  if (movementsCount >= 4) return ' Active';
+  if (movementsCount >= 1) return 'Moderate';
+  return 'inactive';
+});
+console.log(groupedByActivity);
+/*
 console.log(movements);
 const lastWithdrawal = movements.findLast(mov => mov < 0);
 console.log(lastWithdrawal);
@@ -231,6 +246,7 @@ movements.sort((a, b) => {
   }
 });
 console.log(movements);
+
 //Coding Challenge
 
 /*
@@ -307,6 +323,7 @@ const [swimming, s, ...others] = allUniqueDog;
 console.log(swimming, s, others);
 const newArr = [s, swimming, others];
 console.log(newArr);
+*/
 
 // const onlyBreedLike = breeds.map(map => map.activities);
 // const onlyBreedLike = breeds.forEach(function (dogs, i) {});
