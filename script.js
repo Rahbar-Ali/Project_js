@@ -75,9 +75,12 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // console.log(deposits);
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  const movementsSort = sort
+    ? movements.slice().sort((a, b) => a - b)
+    : movements;
+  movementsSort.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = ` 
         <div class="movements__row">
@@ -198,11 +201,122 @@ btnClose.addEventListener('click', function (e) {
   inputCloseUsername.value = inputClosePin.value = '';
 });
 
+let sortedState = false;
+
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sortedState);
+  sortedState = !sortedState;
+});
+
 // The New findLast and findLastIndex Methods
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 console.log(movements);
 const lastWithdrawal = movements.findLast(mov => mov < 0);
 console.log(lastWithdrawal);
+
+('Your lastest large movements was X movements age');
+
+//Sorting Lession 20
+const owner = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owner.sort());
+console.log(movements.sort());
+console.log(movements);
+movements.sort((a, b) => {
+  if (a > b) {
+    return 1;
+  }
+  if (b > a) {
+    return -1;
+  }
+});
+console.log(movements);
+//Coding Challenge
+
+/*
+This time, Julia and Kate are studying the activity levels of different dog breeds.
+
+YOUR TASKS:
+1. Store the the average weight of a "Husky" in a variable "huskyWeight"
+2. Find the name of the only breed that likes both "running" and "fetch" ("dogBothActivities" variable)
+3. Create an array "allActivities" of all the activities of all the dog breeds
+4. Create an array "uniqueActivities" that contains only the unique activities (no activity repetitions). HINT: Use a technique with a special data structure that we studied a few sections ago.
+5. Many dog breeds like to swim. What other activities do these dogs like? Store all the OTHER activities these breeds like to do, in a unique array called "swimmingAdjacent".
+6. Do all the breeds have an average weight of 10kg or more? Log to the console whether "true" or "false".
+7. Are there any breeds that are "active"? "Active" means that the dog has 3 or more activities. Log to the console whether "true" or "false".
+
+BONUS: What's the average weight of the heaviest breed that likes to fetch? HINT: Use the "Math.max" method along with the ... operator.
+
+TEST DATA:
+
+
+const breeds = [
+  {
+    breed: 'German Shepherd',
+    averageWeight: 32,
+    activities: ['fetch', 'swimming'],
+  },
+  {
+    breed: 'Dalmatian',
+    averageWeight: 24,
+    activities: ['running', 'fetch', 'agility'],
+  },
+  {
+    breed: 'Labrador',
+    averageWeight: 28,
+    activities: ['swimming', 'fetch'],
+  },
+  {
+    breed: 'Beagle',
+    averageWeight: 12,
+    activities: ['digging', 'fetch'],
+  },
+  {
+    breed: 'Husky',
+    averageWeight: 26,
+    activities: ['running', 'agility', 'swimming'],
+  },
+  {
+    breed: 'Bulldog',
+    averageWeight: 36,
+    activities: ['sleeping'],
+  },
+  {
+    breed: 'Poodle',
+    averageWeight: 18,
+    activities: ['agility', 'fetch'],
+  },
+];
+
+const huskyWieght = breeds.find(dog => dog.breed === 'Husky');
+console.log(huskyWieght.averageWeight);
+
+const onlyBreedLike = breeds.find(
+  breed =>
+    breed.activities.includes('running') && breed.activities.includes('fetch'),
+).breed;
+console.log(onlyBreedLike);
+
+const arrAllActDog = breeds.map(breed => breed.activities).flat();
+console.log(arrAllActDog);
+
+const allUniqueDog = new Set(arrAllActDog);
+console.log(allUniqueDog);
+
+const [swimming, s, ...others] = allUniqueDog;
+console.log(swimming, s, others);
+const newArr = [s, swimming, others];
+console.log(newArr);
+
+// const onlyBreedLike = breeds.map(map => map.activities);
+// const onlyBreedLike = breeds.forEach(function (dogs, i) {});
+
+// console.log(onlyBreedLike);
+
+// const dogLikeArr = breeds.findIndex(dogs => dogs === 'running');
+// const allDogArr = breeds.filter(dogs => dogs === 'running');
+// console.log(allDogArr);
+// console.log(dogLikeArr);
 
 // LECTURES
 
