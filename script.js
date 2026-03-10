@@ -99,17 +99,23 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // console.log(deposits);
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
   const movementsSort = sort
-    ? movements.slice().sort((a, b) => a - b)
-    : movements;
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
   movementsSort.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(acc.movementsDates[i]);
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    const displayDate = `${day}/${month}/${year}`;
+
     const html = ` 
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__date">3 days ago</div>
+          <div class="movements__date">${displayDate}</div>
           <div class="movements__value">${mov}</div>
         </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -155,7 +161,7 @@ createUsernames(accounts);
 
 const updateUi = function (acc) {
   //Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
   // Display Balance
   calcDisplayBalance(acc);
   //Display summary
@@ -164,6 +170,21 @@ const updateUi = function (acc) {
 
 //Event Handlers
 let currentAccount;
+
+currentAccount = account1;
+updateUi(currentAccount);
+containerApp.style.opacity = 100;
+
+const now = new Date();
+const day = `${now.getDate()}`.padStart(2, 0);
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const year = now.getFullYear();
+const hour = now.getHours();
+const min = now.getMinutes();
+
+labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
+
+// day/month/year
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -205,6 +226,19 @@ btnTransfer.addEventListener('click', function (e) {
     //Update UI
     updateUi(currentAccount);
   }
+});
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Math.floor(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    currentAccount.movements.push(amount);
+
+    updateUi(currentAccount);
+  }
+  inputLoanAmount.value = '';
 });
 
 // FindIndex Method
